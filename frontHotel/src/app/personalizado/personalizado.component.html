@@ -1,0 +1,53 @@
+
+<div *ngIf="listReserva.length>0" class="container mt-5">
+    <button (click)="exportExcel()" class="btn btn-success mb-3">CSV</button>
+<div class="table-responsive">
+    <table  class="table table-bordered" id="table-data">
+        <thead >
+            <tr>
+            <th>ID</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha final</th>
+            <th>Estado</th>
+            <th>Numero</th>
+            <th>Descarga</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let reserva of listReserva| paginate:{itemsPerPage:5,currentPage :p}">
+                <td>{{reserva.id}}</td>
+             <td>{{reserva.diaStart | date: 'yyyy-MM-dd HH:mm a'}}</td>
+             <td>{{reserva.diaEnd | date: 'yyyy-MM-dd HH:mm a'}}</td>
+             <td>{{reserva.estado}}</td>
+             <td>{{reserva.habitacion.numero}}</td>
+             <td>                 
+                <button  (click)="dowloand(reserva)" class="btn btn-danger" >
+                    PDF         
+                </button>
+              </td>     
+            </tr>
+           
+        </tbody>
+</table>
+</div>
+<div style="display: flex;justify-content: center;margin-top:30px">
+    <pagination-controls class="my-pagination" (pageChange)="p = $event"></pagination-controls>
+  </div>
+</div>
+<div *ngIf="listReserva.length<=0" class="container">
+    <h2 style="color:black;text-align: center;">No hay Reservas realizadas hasta ahora</h2>
+    <div class="d-flex justify-content-center mt-5">
+        <img src="assets/imagenes/alertanegra.png">
+    </div>
+</div>
+
+<style>
+    .my-pagination ::ng-deep .ngx-pagination .current {
+        background-color: black; 
+  color: white; 
+  border-color: #007bff;
+  padding: 5px 15px;
+    }
+
+
+  </style>

@@ -1,0 +1,210 @@
+<div class="container mt-5">
+
+     <button *ngIf="isAdmin" type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        AGREGAR
+        </button>
+
+        <full-calendar [options]="calendarOptions"></full-calendar>
+
+
+        <div class="modal fade" id="exampleModalDetail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" (hide.bs.modal)="resetForm()">
+          <div class="modal-dialog modal-md">
+            <div class="modal-content">
+              <div class="modal-header">
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="card">
+                       <div class="card-header text-success">Datos de la Reserva</div>
+                      <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item">
+                            <b>Fecha Inicial:</b><span>{{reservaSeleccionada?.diaStart | date: 'yyyy-MM-dd HH:mm a'}}</span>
+                          </li>
+                          <li class="list-group-item">
+                            <b>Fecha Fin:</b><span>{{reservaSeleccionada?.diaEnd | date: 'yyyy-MM-dd HH:mm a'}}</span>
+                          </li>
+                          <li class="list-group-item">
+                            <b>Estado:</b><span>{{reservaSeleccionada?.estado}}</span>
+                          </li>
+
+                        </ul>
+                
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-sm-6">
+                    <div class="card">
+                       <div class="card-header text-success">Datos de la Habitacion</div>
+                      <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item">
+                            <b>Numero:</b><span>{{reservaSeleccionada?.habitacion.numero}}</span>
+                          </li>
+                          <li class="list-group-item">
+                            <b>Habitacion:</b><span>{{reservaSeleccionada?.habitacion.disponible}}</span>
+                          </li>
+                          <li class="list-group-item">
+                            <b>Tipo:</b><span>{{reservaSeleccionada?.habitacion.tipo.descripcion}}</span>
+                          </li>
+                
+                        </ul>
+                
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="card">
+                       <div class="card-header text-success">Datos del cliente</div>
+                      <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item">
+                            <b>Cliente:</b><span>{{reservaSeleccionada?.user.nombre}}</span>
+                          </li>
+                          <li class="list-group-item">
+                            <b>Username:</b><span>{{reservaSeleccionada?.user.username}}</span>
+                          </li>
+                          <li class="list-group-item">
+                            <span>{{reservaSeleccionada?.user.email}}</span>
+                          </li>
+                
+                        </ul>
+                
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
+                    <div class="carousel-inner">
+                      <div class="carousel-item active" *ngIf="reservaSeleccionada?.habitacion.foto1">
+                        <img src="http://localhost:8080/api/uploads/img/{{reservaSeleccionada?.habitacion.foto1}}" class="d-block w-100" alt="...">
+                      </div>
+                      <div class="carousel-item" *ngIf="reservaSeleccionada?.habitacion.foto2" >
+                        <img src="http://localhost:8080/api/uploads/img/{{reservaSeleccionada?.habitacion.foto2}}" class="d-block w-100" alt="...">
+                      </div>
+                      <div class="carousel-item" *ngIf="reservaSeleccionada?.habitacion.foto3">
+                        <img src="http://localhost:8080/api/uploads/img/{{reservaSeleccionada?.habitacion.foto3}}" class="d-block w-100" alt="...">
+                      </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Next</span>
+                    </button>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="modal-footer">
+                <button  class="btn btn-secondary " data-bs-dismiss="modal">Close</button>
+                <button *ngIf="isAdmin || isUser" (click)="dowloand(reservaSeleccionada)"  class="btn btn-outline-primary" >
+                  <i class="fa-solid fa-download"></i>
+                   PDF
+              </button>
+              <button *ngIf="isAdmin" (click)="delete(reservaSeleccionada)"class="btn btn-danger"  >
+                <i class="fa-sharp fa-regular fa-circle-xmark"></i>  
+                Eliminar
+              </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" (hide.bs.modal)="resetForm()">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 *ngIf="!reserva.id"  class="modal-title fs-5">Nueva Reserva</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()"></button>
+              </div>
+              <div class="modal-body">
+                <ul class="alert alert-danger px-5"  *ngIf="errores?.length > 0">
+                  <li *ngFor="let err of errores">
+                      {{err}}
+                  </li>
+              </ul>
+                  <form>
+
+                    <div class="mb-3 row">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Dia Start</mat-label>
+                        <input matInput [min]="minDateStart" [max]="maxDateStart"
+                        [matDatepicker]="inicial" [(ngModel)]="reserva.diaStart" name="diaStart">
+                        <mat-datepicker-toggle matIconSuffix [for]="inicial"></mat-datepicker-toggle>
+                        <mat-datepicker #inicial></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+
+                      <div class="mb-3 row">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Dia End</mat-label>
+                          <input matInput  [min]="minDateEnd" [max]="maxDateEnd"
+                           [matDatepicker]="Final" [(ngModel)]="reserva.diaEnd" name="diaEnd">
+                          <mat-datepicker-toggle matIconSuffix [for]="Final"></mat-datepicker-toggle>
+                          <mat-datepicker #Final></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="row  mb-3">
+                        <label class="col-sm-2 col-form-label">Cliente</label>
+                        <div class="col-sm-10">
+                        <select  class="form-control"  [(ngModel)]="reserva.user" name="user">
+                            <option [ngValue]="undefined">--- seleccionar al Cliente ---</option>
+                            <option *ngFor="let user of listClientesSinReserva" [ngValue]="user">
+                              {{user.nombre}}
+                            </option>
+                          </select>
+                        </div>
+                    </div>
+
+                      <div class="row  mb-3">
+                        <label class="col-sm-2 col-form-label">Tipo</label>
+                        <div class="col-sm-10">
+                        <select  class="form-control"  (change)="filtrarHabitacionesXTipo()" [(ngModel)]="type_id" name="tipo" >
+                            <option [ngValue]="undefined">--- seleccionar el Tipo ---</option>
+                            <option *ngFor="let tipo of listTipo" [ngValue]="tipo.id">
+                              {{ tipo.descripcion}} S/ {{tipo.precio}}
+                            </option>
+                          </select>
+                        </div>
+                    </div>
+
+                    <div class="row  mb-3">
+                      <label class="col-sm-2 col-form-label">Habitación</label>
+                      <div class="col-sm-10">
+                      <select  class="form-control" [(ngModel)]="reserva.habitacion" name="room" >
+                          <option [ngValue]="undefined">--- seleccionar una habitación ---</option>
+                          <option *ngFor="let room of listRooms" [ngValue]="room">
+                            {{ room.numero }}
+                          </option>
+                        </select>
+                      </div>
+                  </div>
+                     
+        
+                    </form>
+              </div>
+              <div class="modal-footer">
+                <button  class="btn btn-secondary " data-bs-dismiss="modal">Close</button>
+                <button *ngIf="!reserva.id"  class="btn btn-primary "(click)="createReserva()">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+<style>
+  ::ng-deep .cdk-overlay-container {
+  z-index: 1200 !important;
+}
+</style>

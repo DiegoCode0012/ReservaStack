@@ -1,0 +1,116 @@
+
+<div class="container mt-5">
+<div class="table-responsive">
+<table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Numero</th>
+                <th>Disponible</th>
+                <th>Tipo</th>
+                <th>Precio</th>
+                <th *ngIf="isAdmin">Editar</th>
+                <th *ngIf="isAdmin">Eliminar</th>
+            </tr>
+        </thead>
+        <tbody> 
+            <tr  *ngFor="let rooms of ListRooms | paginate:{itemsPerPage:5,currentPage :p}">
+                <td>{{rooms.id}}</td>
+                <td>{{rooms.numero}}</td>
+                <td [ngStyle]="{'color': rooms.disponible? 'blue' : 'red'}">{{rooms.disponible}}</td>
+                <td>{{rooms.tipo.descripcion}}</td>
+                <td>{{rooms.tipo.precio}}</td>
+                <td *ngIf="isAdmin">
+                    <button  (click)="cargarRoom(rooms.id)" class="btn btn-warning"
+                    data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <i class="far fa-edit"></i>
+                            
+                     </button>
+                    </td>
+                  <td *ngIf="isAdmin">
+                    
+                    <button  class="btn btn-danger" (click)="delete(rooms)" >
+                        <i class="fa-sharp fa-regular fa-circle-xmark"></i>
+                        
+                    </button>
+                  </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    <div style="display: flex;justify-content: center;margin-top:30px">
+      <pagination-controls class="my-pagination" (pageChange)="p = $event"></pagination-controls>
+    </div>
+<button  *ngIf="isAdmin" class="btn btn-outline-success "  data-bs-toggle="modal" data-bs-target="#exampleModal">
+    AGREGAR
+</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" (hide.bs.modal)="resetForm()">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 *ngIf="!room.id"  class="modal-title fs-5">Nueva Habitacion</h1>
+          <h1 *ngIf="room.id" class="modal-title fs-5">Editar Habitación</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()"></button>
+        </div>
+        <div class="modal-body">
+          <ul class="alert alert-danger px-5"  *ngIf="errores?.length > 0">
+            <li *ngFor="let err of errores">
+                {{err}}
+            </li>
+        </ul>
+            <form>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Numero</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" [(ngModel)]="room.numero" name="numero">
+                    </div>
+                </div>
+   
+                <div class="row  mb-3">
+                    <label class="col-sm-2 col-form-label">Tipo</label>
+                    <div class="col-sm-10">
+                    <select [compareWith]="checkTipo" class="form-control" [(ngModel)]="room.tipo" name="tipo" >
+                        <option [ngValue]="undefined">--- seleccionar una habitación ---</option>
+                        <option *ngFor="let tipo of listTipos" [ngValue]="tipo">
+                          {{ tipo.descripcion }}
+                        </option>
+                      </select>
+                    </div>
+                </div>
+
+                <div *ngIf="room.id" class="row mb-3">
+                  <div class="col-sm-10">
+                    <input  class="form-control form-control-sm" (change)="seleccionarFoto($event)" type="file" name="filefield" multiple id="inputGroupFile04">        
+                  </div>
+                  <div class="col-sm-2 input-group-append">
+                    <button (click)="subirFoto()" [disabled]="archivos.length === 0" class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Subir</button>
+                  </div>
+                 
+                </div>
+                  <img *ngIf="room?.foto1" src="http://localhost:8080/api/uploads/img/{{room.foto1}}"  class="img-thumbnail rounded" />
+                  <img *ngIf="room?.foto2" src="http://localhost:8080/api/uploads/img/{{room.foto2}}"  class="img-thumbnail rounded" />
+                  <img *ngIf="room?.foto3" src="http://localhost:8080/api/uploads/img/{{room.foto3}}"  class="img-thumbnail rounded" />
+                  <p *ngIf="errorFoto">{{errorFoto}}</p>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Close</button>
+          <button *ngIf="!room.id" type="button" class="btn btn-primary "(click)="create()">Save</button>
+          <button *ngIf="room.id" type="button" class="btn btn-warning " (click)="updateRoom()">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+
+
+  .my-pagination ::ng-deep .ngx-pagination .current {
+          background-color: black; 
+    color: white; 
+    border-color: #007bff;
+    padding: 5px 15px;
+      }
+  </style>

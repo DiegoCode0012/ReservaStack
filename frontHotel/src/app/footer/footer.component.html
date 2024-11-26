@@ -1,0 +1,45 @@
+<footer *ngIf="!isAdmin && !isUser" class="footer my-5 bg-dark-sm">
+    <div class="d-flex flex-wrap p-2 justify-content-evenly text-center">
+        <div class="py-5">
+            <ul>
+                <li><a href="/inicio">Información General</a></li>
+                <li><a href="/galerias">Galería</a></li>
+                <li><a href="/habitaciones">Habitaciones</a></li>
+                <li><a href="/restaurantes">Restaurantes</a></li>
+            </ul>
+        </div>
+        <div class="py-5">
+            <ul>
+                <li><a href="#">Eventos</a></li>
+                <li><a href="#">Aviso Legal</a></li>
+                <li>Paseo de la República 170,Lima, Perú, 15001</li>
+                <li>Sin cargo: +51-1-3155022</li>
+            </ul>
+        </div>
+        <div class="py-5">
+            <ul>
+                <li><img style="width: 100%;height: 200px;border-radius: 5%;" src="https://imgcy.trivago.com/c_fill,d_dummy.jpeg,e_sharpen:60,f_auto,h_534,q_40,w_800/hotelier-images/9c/1f/82958b4f4b9f2a0d17d4e8f1f5b6285a56c20e6ec9b15394e4e5d92aa7d1.jpeg"></li>
+            </ul>
+        </div>      
+
+
+    </div>
+  </footer>
+  
+
+  <style>
+    /* Estilos personalizados para pantallas pequeñas */
+    .bg-dark-sm{
+        background-color:#343a40;
+    }
+    @media (max-width: 767.98px) {
+      .bg-dark-sm {
+        background-color: black;
+        color: white;
+      }
+      .bg-dark-sm a {
+        color: white;
+      }
+    }
+  </style>
+ 

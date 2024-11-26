@@ -1,0 +1,71 @@
+<div class="alert alert-primary">
+    La Reserva fue realizada de manera exitosa
+</div>
+<div class="container">
+
+    
+<div class="row justify-content-center">
+    <div class="col-md-4 my-3">
+        <div class="card">
+            <div class="card-header bg-success" style="color:white">Datos de la Reserva</div>
+           <div class="card-body">
+             <ul class="list-group list-group-flush">
+               <li class="list-group-item">
+                 <b>Fecha Inicial:</b><span>{{reserva?.diaStart | date: 'yyyy-MM-dd HH:mm a'}}</span>
+               </li>
+               <li class="list-group-item">
+                 <b>Fecha Fin:</b><span>{{reserva?.diaEnd | date: 'yyyy-MM-dd HH:mm a'}}</span>
+               </li>
+               <li class="list-group-item">
+                 <b>Estado:</b><span>{{reserva?.estado}}</span>
+               </li>
+             </ul>
+           </div>
+         </div>
+    </div>  
+    <div class="col-md-3  my-3">
+        <div class="card">
+            <div class="card-header bg-success" style="color:white">Datos de la Habitacion</div>
+           <div class="card-body">
+             <ul class="list-group list-group-flush">
+               <li class="list-group-item">
+                 <b>Numero:</b><span>{{reserva?.habitacion.numero}}</span>
+               </li>
+               <li class="list-group-item">
+                 <b>Habitacion:</b><span>{{reserva?.habitacion.disponible}}</span>
+               </li>
+               <li class="list-group-item">
+                 <b>Tipo:</b><span>{{reserva?.habitacion.tipo.descripcion}}</span>
+               </li>
+             </ul>
+           </div>
+         </div>
+    </div>
+    <div class="col-md-3  my-3">
+        <div class="card">
+            <div class="card-header bg-success" style="color:white">Datos del cliente</div>
+           <div class="card-body">
+             <ul class="list-group list-group-flush">
+               <li class="list-group-item">
+                 <b>Cliente:</b><span>{{reserva?.user.nombre}}</span>
+               </li>
+               <li class="list-group-item">
+                 <b>Username:</b><span>{{reserva?.user.username}}</span>
+               </li>
+               <li class="list-group-item">
+                <b>Email:</b><span>{{reserva?.user.email}}</span>
+               </li>
+             </ul>
+           </div>
+         </div>
+    </div>   
+
+</div>
+
+<div class="d-flex justify-content-center">
+    <img class="w-25" src="https://static.vecteezy.com/system/resources/previews/034/371/748/non_2x/emphasis-check-mark-icon-completed-sign-vector.jpg">
+</div>
+<a href="inicio" class="btn btn-primary float-end">Volver Inicio</a>
+
+</div>
+

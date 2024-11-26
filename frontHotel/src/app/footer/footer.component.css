@@ -1,0 +1,17 @@
+.footer {
+    font-size: 16px;
+  }
+ul{
+    list-style-type: none;
+    color:white;
+}  
+ul li{
+    padding:  10px 0px;
+}
+ul li a {
+    text-decoration: none;
+    color:white;
+}
+ul li a:hover{
+    color:#0d6efd;
+}

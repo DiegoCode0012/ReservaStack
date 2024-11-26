@@ -1,0 +1,40 @@
+
+<div class="container mt-5">
+  <div class="table-responsive">
+      <table class="table">
+          <thead class="table-dark">
+              <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th *ngIf="isAdmin">Rol</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let usuarios of listUser | paginate: { itemsPerPage: 5, currentPage: p }">
+                  <td>{{ usuarios.id }}</td>
+                  <td>{{ usuarios.nombre }}</td>
+                  <td>{{ usuarios.username }}</td>
+                  <td>{{ usuarios.email }}</td>
+                  <td *ngIf="isAdmin">
+                      {{ getRoles(usuarios.roles) }}
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+  <div style="display: flex; justify-content: center; margin-top: 30px;">
+      <pagination-controls class="my-pagination" (pageChange)="p = $event"></pagination-controls>
+  </div>
+</div>
+<style>
+
+
+.my-pagination ::ng-deep .ngx-pagination .current {
+        background-color: black; 
+  color: white; 
+  border-color: #007bff;
+  padding: 5px 15px;
+    }
+</style>

@@ -1,0 +1,50 @@
+<div class="alert alert-danger" *ngIf="incorrecto">
+    Debe loguearse antes de realizar una compra
+</div>
+<div class="container-fluid">
+  
+<div class="row justify-content-center mt-5">
+    <div class="col-12 col-md-5 col-lg-5 col-xl-3">
+        <div class="card">
+            <div class="card-header">
+                    <ul class="nav nav-tabs justify-content-center">
+                        <li class="nav-item">
+                            <a class="nav-link active " routerLink="/login">Iniciar Sesión</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active " routerLink="/crear">Crear Cuenta</a>
+                        </li>
+                    </ul>
+            </div>
+            <div class="card-body">
+                <form (ngSubmit)="onLogin()">
+                    <div class="row my-3">
+                        <label  class="col-3 col-form-label">Username</label>
+                        <div class="col-9">
+                            <input   [(ngModel)]="loginUsuario.nombreUsuario"
+                             type="text" name="nombreUsuario"
+                             class="form-control  p-2">
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <label class="col-3 col-form-label">Password</label>
+                        <div class="col-9">
+                            <input type="password" name="password" id="password"  [(ngModel)]="loginUsuario.password"
+                             class="form-control  p-2">
+                        </div>
+                    </div>
+                    <div class="row my-3 p-3">
+                            <button  class="btn btn-outline-success btn-block" type="submit">
+                                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión</button>
+                        
+                    </div>
+            </form>
+            <div class="alert alert-danger d-flex justify-content-center align-items-center" *ngIf="errMsj!=null">
+                <div>{{errMsj}}</div>
+             </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,85 @@
+<div class="container mt-3">
+   <div class="row justify-content-center">
+                <div class="col-md-2 btn btn-outline-dark m-3 p-3">
+                    <div class="d-flex justify-content-between">
+                        <div  style="border-bottom: 1px solid black;">
+                            <b>Ventas</b>
+                            <h2>S/{{gananciaTotal}}</h2>
+                        </div>
+                        <div><i class="fa-solid fa-briefcase"></i></div>
+                    </div>    
+                </div>  
+              <div class="col-md-2 btn btn-outline-dark m-3 p-3">
+                <div class="d-flex justify-content-between">
+                    <div  style="border-bottom: 1px solid black;">
+                        <b>Reservas Totales</b>
+                        <h2>{{totalReservas}}</h2>
+                    </div>
+                    <div><i class="fa-solid fa-hotel"></i></div>
+                </div> 
+            </div>
+            <div class="col-md-2 btn btn-outline-dark m-3 p-3">
+                <div class="d-flex justify-content-between">
+                    <div style="border-bottom: 1px solid black;">
+                        <b>Clientes Totales</b>
+                        <h2>{{totalClients}}</h2>
+                    </div>
+                    <div><i class="fa-solid fa-user p-1"></i></div>
+                </div> 
+            </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-11 m-3 p-2">
+            <canvas baseChart
+            [data]="chartData"
+            [options]="chartOptions"
+            chartType="bar">
+    </canvas>
+        </div>  
+</div>
+
+    <div class="row justify-content-around p-3 flex-wrap">
+        <div class="col-12 col-md-3">
+            <h3 style="color:#007bff;margin: auto;">Habitaciones Mas solicitadas</h3>
+            <table class="table" style="color:#007bff">
+                    <thead class="table-dark">
+                        <tr>
+                        <th>Numero</th>
+                        <th>Cantidad Solicitada</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let habitacion of listHM">
+                         <td>{{habitacion.numero}}</td>
+                         <td>{{habitacion.cantidad}}</td>
+                        </tr>
+                    </tbody>
+            </table>
+        
+        </div>
+    
+        <div class="col-12 col-md-3">
+            <h3 style="color:#007bff;margin: auto;">Ganancias por tipo de Habitación</h3>
+            <table class="table" style="color:#007bff">
+                    <thead class="table-dark">
+                        <tr>
+                        <th>Tipo</th>
+                        <th>Ganancia</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let gananciaTipo of listGananciasPorTipo">
+                         <td>{{gananciaTipo.descripcion}}</td>
+                         <td>{{gananciaTipo.totalxTipo}}</td>
+                        </tr>
+                    </tbody>
+            </table>
+        
+        </div>
+    
+        </div>
+
+
+</div>
+

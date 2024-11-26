@@ -1,0 +1,195 @@
+<div id="calendario" class=" container-fluid" style="background-color: white;box-shadow: 0px 1px 10px rgba(0,0,0,0.2);">
+<div class="row p-2 d-flex justify-content-xxl-center align-items-xxl-stretch justify-content-md-center">
+   <div class=" col-xxl-2 p-2 text-center" style="border-right: 1px solid #f1f3f6;border: 2px solid #f1f3f6;">
+    <mat-form-field class="example-full-width">
+      <mat-label>Dia Start</mat-label>
+      <input (dateChange)="cambiarLocalStorageDiaStart()" matInput [min]="minDateStart" [max]="maxDateStart"
+             [matDatepicker]="inicial" [(ngModel)]="reserva.diaStart" name="diaStart">
+      <mat-datepicker-toggle matIconSuffix [for]="inicial"></mat-datepicker-toggle>
+      <mat-datepicker #inicial></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div class=" col-xxl-2 p-2 text-center " style="border-right: 1px solid #f1f3f6;border: 2px solid #f1f3f6;border-left: none;">
+    <mat-form-field class="example-full-width">
+      <mat-label>Dia End</mat-label>
+      <input (dateChange)="cambiarLocalStorageDiaEnd()" matInput [min]="minDateEnd" [max]="maxDateEnd"
+             [matDatepicker]="Final" [(ngModel)]="reserva.diaEnd" name="diaEnd">
+      <mat-datepicker-toggle matIconSuffix [for]="Final"></mat-datepicker-toggle>
+      <mat-datepicker #Final></mat-datepicker>
+    </mat-form-field> 
+  </div>
+
+  <div class="col-12 col-md-6 col-lg-6 col-xxl-2 p-2 text-center d-flex flex-column justify-content-center" style="border: 1px solid #f1f3f6;border: 2px solid #f1f3f6;border-left: none;" >
+
+    <select  (change)="filtrarHabitacionesXTipo()" class="form-control " [(ngModel)]="type_id" name="tipo">
+          <option [ngValue]="undefined">--- Seleccionar todos ---</option>
+          <option *ngFor="let tipo of listTipo" [ngValue]="tipo.id">
+            {{ tipo.descripcion}} S/ {{tipo.precio}}
+          </option>
+        </select>
+
+  </div>
+</div>
+</div>
+
+<ul class="alert alert-danger px-5"  *ngIf="msjError?.length > 0">
+  <li *ngFor="let err of msjError">
+      {{err}}
+  </li>
+</ul>
+<div id="carouselExampleIndicators" class="carousel slide">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="assets/imagenes/VistaHotel2.png" class="d-block w-100" style="height: auto; max-height: 650px;" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="https://cache.marriott.com/content/dam/marriott-renditions/LIMSI/limsi-suite-0503-hor-pano.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=1920px:*" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="https://cache.marriott.com/content/dam/marriott-renditions/LIMSI/limsi-pool-5358-hor-pano.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=1920px:*" class="d-block w-100" alt="...">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <div style="background-color: #f8e7e3;" class="d-flex justify-content-center flex-column align-items-center px-5 py-4 text-center">
+    <h2 class=" py-3"style="font-size:20px; font-family: serif">Bienvenido a Sheraton Lima Historic Center</h2>
+    <h1 class=" py-2" style="font-size: 54px;font-family: serif;line-height: 1.2;color:#797271;">Disfrute de comodidades modernas en nuestro hotel en el Centro Histórico de Lima</h1>
+    <p class="  py-2" style="font-size:20px;font-family: serif">Privilegiadamente ubicado en el centro histórico de la ciudad y adyacente al Centro Comercial Real Plaza, todos los Viajeros por negocios o por placer, encontrarán las comodidades necesarias para una estadía</p>
+  </div>
+
+
+
+
+ <div class="row g-0 justify-content-center m-3">
+  <h4 class="text-center">HABITACIONES DISPONIBLES</h4>
+  <div class="imagen col-10 col-sm-6 col-md-3 col-lg-2 m-4 text-center rounded-3" *ngFor="let habitacion of habitaciones | paginate:{itemsPerPage:4,currentPage :p}">
+      <img  class="rounded-top-3" (click)="abrirModal(habitacion)" style="width:100%;cursor: pointer; object-fit: cover;" 
+      [src]="habitacion?.foto1 ? 'http://localhost:8080/api/uploads/img/' + habitacion.foto1 : 'assets/imagenes/imagenSinFoto.png'"  >
+      <div class="p-3"> 
+        <b style="font-size: 18px;">Numero Habitación:</b><p style="font-size: 18px;"> {{habitacion.numero}}</p>
+        <b style="font-size: 18px;">Tipo:</b> <p style="font-size: 18px;"> {{habitacion.tipo.descripcion}}</p>
+        <h4 class="pt-3" style="border-bottom: 1px black solid;"></h4>
+        <a (click)="abrirModal(habitacion)"  class="text-end" style="color:black;font-weight: bold;">Ver más</a>
+      </div>
+  </div>
+</div>
+<div style="display: flex;justify-content: center;margin-top:30px">
+  <pagination-controls class="my-pagination" (pageChange)="p = $event"></pagination-controls>
+</div>
+
+<div class="modal fade" id="habitacionModal" tabindex="-1" aria-labelledby="habitacionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-black">
+        <h2 style="color:white" class="modal-title" id="habitacionModalLabel">Detalles de la Habitación</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body"> 
+        <div class="row mt-3">
+          <!-- Carousel Section -->
+          <div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
+            <div class="carousel-inner">
+              <div *ngFor="let foto of [habitacionSeleccionado?.foto1, habitacionSeleccionado?.foto2, habitacionSeleccionado?.foto3]; let i = index"
+                   [class.active]="i === 0" class="carousel-item">
+                <img style="width: 100%;" 
+                     [src]="foto ? 'http://localhost:8080/api/uploads/img/' + foto : 'assets/imagenes/imagenSinFoto.png'" 
+                     alt="...">
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+          
+          <!-- Information Section -->
+          <div class="mt-4 p-5" style="font-size: 18px;">
+            <h2 style="border-bottom: 2px solid black;">Habitación</h2>
+            <p><b>Numero:</b> {{ habitacionSeleccionado?.numero }}</p>  
+            <p><b>Tipo de Habitación:</b> {{ habitacionSeleccionado?.tipo.descripcion }}</p>
+            <p><b>Precio de Tipo de Habitación:</b> S/ {{ habitacionSeleccionado?.tipo.precio }}</p>
+          </div>
+          
+          <!-- Buttons Section -->
+          <div class="d-flex justify-content-end mt-4">
+            <button  data-bs-dismiss="modal" class="btn btn-primary m-2" (click)="setear()" >Reservar</button>
+            <button class="btn btn-secondary m-2" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <div class="row justify-content-center m-3">
+    <h4 class="text-center">OFERTAS Y PAQUETES</h4>
+      <div class="imagen col-md-2 p-0 m-3 rounded-4">
+        <img class="rounded-top-4" style="width:100%;" src="https://cache.marriott.com/is/image/marriotts7prod/xr-pvrxr-0d3a8782-40677:Classic-Hor?output-quality=70&interpolation=progressive-bilinear&downsize=600px:*">
+        <div class="text-center mt-2 p-3"> 
+          Disfruta de una noche mágica con nuestra escapada romántica. Incluye una habitación decorada con pétalos de rosa, una botella de vino espumoso, y un desayuno en la habitación. 
+          Perfecto para aniversarios o para sorprender a esa persona especial. 
+          Además, puedes añadir una cena romántica para dos con un descuento exclusivo.</div>
+    </div>
+    
+    <div class="imagen col-md-2 p-0 m-3 rounded-4">
+        <img  class="rounded-top-4" style="width:100%;" src="https://cache.marriott.com/is/image/marriotts7prod/pdt-Fall-in-Vail-Colorado-96-626938715294118:Classic-Hor?output-quality=70&interpolation=progressive-bilinear&downsize=600px:*">
+        <div class="text-center mt-2 p-3"> 
+          Pensado para familias que desean disfrutar juntas. Esta oferta incluye alojamiento para 2 adultos y 2 niños, c
+          on desayuno buffet para todos, y una actividad familiar gratuita, como acceso al parque acuático o al área de juegos. 
+          ¡Una forma perfecta de crear recuerdos juntos sin preocuparse por nada más!</div>
+    </div>
+    <div class="imagen col-md-2 p-0 m-3 rounded-4">
+        <img  class="rounded-top-4" style="width:100%;" src="https://cache.marriott.com/is/image/marriotts7prod/pdt-Bridge-860410087722944-169323066104463:Classic-Hor?output-quality=70&interpolation=progressive-bilinear&downsize=600px:*">
+        <div class="text-center mt-2 p-3">
+          Escapa de la rutina y relájate completamente con nuestro paquete de bienestar.
+           Incluye dos noches de hospedaje, acceso al spa con un masaje de 30 minutos, y una clase 
+           de yoga matutina. Perfecto para quienes buscan un descanso de la vida cotidiana y 
+           desean reconectar cuerpo y mente en un ambiente de paz y tranquilidad.
+        </div>
+    </div>
+    <div class="imagen col-md-2 p-0 m-3 rounded-4">
+      <img  class="rounded-top-4" style="width:100%;" src="https://cache.marriott.com/is/image/marriotts7prod/pdt-Summer-Austin-Texas-47-881262968268354:Classic-Hor?output-quality=70&interpolation=progressive-bilinear&downsize=600px:*">
+      <div class="text-center mt-2 p-3">
+
+        Un fin de semana diseñado para los amantes de la gastronomía. 
+        Esta oferta incluye alojamiento con desayuno, una cena de degustación de cinco tiempos preparada por nuestro chef, 
+        y un taller de cocina exclusivo donde aprenderás a preparar uno de nuestros platos estrella. 
+        Ideal para descubrir nuevos sabores y técnicas culinarias.
+      </div>
+  </div>
+</div>
+
+<style>
+  #calendario.fixed {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.my-pagination ::ng-deep .ngx-pagination .current {
+        background-color: black; 
+  color: white; 
+  border-color: #007bff;
+  padding: 5px 15px;
+    }
+</style>

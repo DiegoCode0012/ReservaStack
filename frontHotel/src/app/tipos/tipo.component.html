@@ -1,0 +1,72 @@
+<style>
+
+
+  .my-pagination ::ng-deep .ngx-pagination .current {
+          background-color: black; 
+    color: white; 
+    border-color: #007bff;
+    padding: 5px 15px;
+      }
+  </style>
+
+<div class="container mt-5">
+  <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr class="table-dark">
+                <th>ID</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody> 
+            <tr *ngFor="let tipos of tiposArreglo | paginate:{itemsPerPage:5,currentPage :p}">
+                <td>{{tipos.id}}</td>
+                <td>{{tipos.descripcion}}</td>
+                <td>{{tipos.precio}}</td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+  <div style="display: flex;justify-content: center;margin-top:30px">
+    <pagination-controls class="my-pagination" (pageChange)="p = $event"></pagination-controls>
+  </div>
+    <button *ngIf="isAdmin" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        AGREGAR
+        </button>
+
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" (hide.bs.modal)="resetForm()">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 *ngIf="!tipo.id"  class="modal-title fs-5">Nuevo Tipo</h1>
+                  <h1 *ngIf="tipo.id" class="modal-title fs-5">Editar Tipo</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()"></button>
+                </div>
+                <div class="modal-body">
+                 <ul class="alert alert-danger px-5"  *ngIf="errores?.length > 0">
+                    <li *ngFor="let err of errores">
+                        {{err}}
+                    </li>
+                </ul> 
+            
+                    <form #tipoForm="ngForm">
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">Descripcion</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" [(ngModel)]="tipo.descripcion" name="descripcion">
+                            </div>
+                          </div>
+          
+                      </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Close</button>
+                  <button *ngIf="!tipo.id" type="button" class="btn btn-primary "(click)="create()">Save</button>
+                  <button *ngIf="tipo.id" type="button" class="btn btn-warning " (click)="updateTipo()">Update</button>
+                </div>
+              </div>
+            </div>
+          </div>
+</div>
